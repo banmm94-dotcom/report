@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>تقرير طبي - سرطان الثدي</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f6f7;
+      margin: 40px;
+      color: #837b37;
+    }
+    .report-container {
+      background-color: #fff;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      max-width: 900px;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+      color: #462404;
+    }
+    h2 {
+      color: #7a5011;
+      border-bottom: 2px solid #dbdcd5;
+      padding-bottom: 5px;
+    }
+    textarea {
+      width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 16px;
+      resize: vertical;
+    }
+    .section {
+      margin-bottom: 30px;
+    }
+    .button-group {
+      text-align: center;
+      margin-top: 30px;
+    }
+    button {
+      background-color: #a37725;
+      color: white;
+      padding: 12px 20px;
+      margin: 5px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #614b04ce;
+    }
+  </style>
+</head>
+<body>
+
+<div class="report-container">
+  <h1>التقرير الطبي - التاريخ الطبي للمريضة</h1>
+
+  <div class="section">
+    <h2>البيانات العامة</h2>
+    <textarea rows="5" id="general">الاسم:
+العمر:
+رقم الملف الطبي:
+تاريخ الدخول:
+الطبيب المعالج:</textarea>
+  </div>
+
+  <div class="section">
+    <h2>التشخيص الرئيسي</h2>
+    <textarea rows="2" id="diagnosis">سرطان الثدي (Breast Cancer)</textarea>
+  </div>
+
+  <div class="section">
+    <h2>التاريخ المرضي الحالي</h2>
+    <textarea rows="5" id="history">المريضة حضرت إلى المستشفى وهي تشتكي من وجود كتلة في الثدي منذ مدة. تم إجراء الفحوصات اللازمة وأظهرت الخزعة وجود خلايا سرطانية.</textarea>
+  </div>
+
+  <div class="section">
+    <h2>نوع السرطان</h2>
+    <textarea rows="5" id="type">النوع النسيجي:
+المرحلة المرضية:
+الدرجة:
+مستقبلات الهرمونات: ER / PR / HER2</textarea>
+  </div>
+
+  <div class="section">
+    <h2>التاريخ العائلي</h2>
+    <textarea rows="3" id="family">تاريخ عائلي للإصابة بسرطان الثدي:
+أفراد العائلة المصابين:</textarea>
+  </div>
+
+  <div class="section">
+    <h2>الخطة العلاجية</h2>
+    <textarea rows="5" id="plan">الجراحة:
+العلاج الكيميائي:
+العلاج الإشعاعي:
+العلاج الهرموني:</textarea>
+  </div>
+
+  <div class="section">
+    <h2>التوصيات</h2>
+    <textarea rows="4" id="recommendations">- الالتزام بالخطة العلاجية
+- حضور مواعيد المتابعة
+- الدعم النفسي
+- التثقيف الذاتي</textarea>
+  </div>
+
+  <div class="button-group">
+    <button onclick="saveToLocalStorage()">💾 حفظ</button>
+    <button onclick="downloadReport()">📄 تحميل كملف</button>
+    <button onclick="window.print()">🖨️ طباعة أو حفظ PDF</button>
+  </div>
+</div>
+
+<script>
+  function saveToLocalStorage() {
+    const fields = ["general", "diagnosis", "history", "type", "family", "plan", "recommendations"];
+    fields.forEach(id => {
+      localStorage.setItem(id, document.getElementById(id).value);
+    });
+    alert("✅ تم حفظ البيانات داخل المتصفح!");
+  }
+
+  function downloadReport() {
+    const fields = ["general", "diagnosis", "history", "type", "family", "plan", "recommendations"];
+    let content = "📋 التقرير الطبي - سرطان الثدي\\n\\n";
+    fields.forEach(id => {
+      const title = document.querySelector(`textarea#${id}`).previousElementSibling.innerText;
+      const value = document.getElementById(id).value;
+      content += `\\n${title}:\\n${value}\\n`;
+    });
+
+    const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "تقرير-طبي-سرطان-الثدي.txt";
+    a.click();
+  }
+
+  window.onload = function () {
+    const fields = ["general", "diagnosis", "history", "type", "family", "plan", "recommendations"];
+    fields.forEach(id => {
+      const saved = localStorage.getItem(id);
+      if (saved) document.getElementById(id).value = saved;
+    });
+  };
+</script>
+
+</body>
+</html>
